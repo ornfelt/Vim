@@ -53,10 +53,17 @@ set completeopt+=longest,menuone
 set completeopt+=preview
 let g:jedi#popup_on_dot = 1
 
+nnoremap <SPACE> <Nop>
+let mapleader=" "
+"replace from void
+noremap P viw"_dP
+noremap Y y$
+
 "map <F1>
 map <F4> <Esc>:set cursorline!<CR>
 map <F5> :call CompileRunGcc()<CR>
 map <F6> <Esc>:setlocal spell! spelllang=en_us<CR>
+map <F7> <Esc>:setlocal spell! spelllang=sv<CR>
 
 nnoremap <Down> :resize +2<CR>
 nnoremap <Up> :resize -2<CR>
@@ -92,7 +99,7 @@ autocmd FileType sql inoremap pro<Tab> delimiter //<Enter>create procedure x ()<
 autocmd FileType sql inoremap vie<Tab> create view x as<Enter>select <Esc>/x<Enter>GN
 
 autocmd FileType text inoremap <line<Tab> --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-autocmd FileType text inoremap <dot<Tab> ¿
+autocmd FileType text inoremap <dot<Tab> â€¢
 autocmd FileType text inoremap <date<Tab> <-- <C-R>=strftime("%Y-%m-%d %a")<CR><Esc>A -->
 
 set statusline=
@@ -121,6 +128,7 @@ map <C-b> :NERDTreeToggle<CR>
 "Better tabbing
 vnoremap < <gv
 vnoremap > >gv
+imap <C-v> <C-r>+
 
 func! CompileRunGcc()
 exec "w"
