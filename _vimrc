@@ -9,6 +9,8 @@ set runtimepath+=~/.vim
 set rtp+=~/.fzf
 "set pythonthreehome=C:\Users\jonas\AppData\Local\Programs\Python\Python39
 "set pythondthreell=C:\Users\jonas\AppData\Local\Programs\Python\Python39\DLLs
+set pythonthreehome=C:\Users\jonas\AppData\Local\Programs\Python\Python38-32
+set pythondthreell=C:\Users\jonas\AppData\Local\Programs\Python\Python38-32\DLLs
 
 filetype plugin indent on
 execute pathogen#infect()
@@ -49,6 +51,8 @@ set scrolloff=8
 "highlight Normal guibg=none
 colorscheme hybrid
 "some new stuff
+set complete+=kspell
+set shortmess+=c
 set completeopt+=longest,menuone
 set completeopt+=preview
 let g:jedi#popup_on_dot = 1
@@ -58,6 +62,13 @@ let mapleader=" "
 "replace from void
 noremap P viw"_dP
 noremap Y y$
+
+"FZF
+nnoremap <M-a> :Files <cr>
+nnoremap <M-s> :Files ../..<cr>
+nnoremap <M-d> :Files ../../..<cr>
+nnoremap <M-w> :NERDTreeFind<CR>
+map <C-b> :NERDTreeToggle<CR>
 
 "map <F1>
 map <F4> <Esc>:set cursorline!<CR>
@@ -124,7 +135,6 @@ let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 
-map <C-b> :NERDTreeToggle<CR>
 "Better tabbing
 vnoremap < <gv
 vnoremap > >gv
