@@ -31,6 +31,7 @@ set wildmenu
 set backspace=indent,eol,start
 set lines=48
 set columns=210
+set tw=206
 set nocompatible
 set smartindent
 set autoindent
@@ -46,7 +47,6 @@ highlight Normal ctermbg=NONE
 highlight CursorLine cterm=NONE ctermbg=darkblue
 set cursorline
 set autochdir
-set nohlsearch
 set scrolloff=8
 "highlight Normal guibg=none
 colorscheme hybrid
@@ -57,6 +57,7 @@ set completeopt+=longest,menuone
 set completeopt+=preview
 let g:jedi#popup_on_dot = 1
 
+"Keybinds
 nnoremap <SPACE> <Nop>
 let mapleader=" "
 "replace from void
@@ -72,7 +73,9 @@ map <C-b> :NERDTreeToggle<CR>
 
 "map <F1>
 map <F4> <Esc>:set cursorline!<CR>
-map <F5> :call CompileRunGcc()<CR>
+"map <F5> :call CompileRunGcc()<CR>
+map <M-z> :noh<CR>
+map <M-x> :call CompileRunGcc()<CR>
 map <F6> <Esc>:setlocal spell! spelllang=en_us<CR>
 map <F7> <Esc>:setlocal spell! spelllang=sv<CR>
 
@@ -109,7 +112,7 @@ autocmd FileType sql inoremap fun<Tab> delimiter //<Enter>create function x ()<E
 autocmd FileType sql inoremap pro<Tab> delimiter //<Enter>create procedure x ()<Enter>begin<Enter><Enter><Enter>end //<Enter>delimiter ;<Esc>/x<Enter>GN
 autocmd FileType sql inoremap vie<Tab> create view x as<Enter>select <Esc>/x<Enter>GN
 
-autocmd FileType text inoremap <line<Tab> --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+autocmd FileType text inoremap <line<Tab> --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------<Enter>
 autocmd FileType text inoremap <dot<Tab> •
 autocmd FileType text inoremap <date<Tab> <-- <C-R>=strftime("%Y-%m-%d %a")<CR><Esc>A -->
 
