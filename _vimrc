@@ -11,7 +11,9 @@ set rtp+=~/.fzf
 "set pythondthreell=C:\Users\jonas\AppData\Local\Programs\Python\Python39\DLLs
 set pythonthreehome=C:\Users\jonas\AppData\Local\Programs\Python\Python38-32
 set pythondthreell=C:\Users\jonas\AppData\Local\Programs\Python\Python38-32\DLLs
-
+" get syntax highlighting
+let mysyntaxfile = "~/.vim/syntax/vtxt.vim"
+au BufRead,BufNewFile *.vtxt set filetype=vtxt
 filetype plugin indent on
 execute pathogen#infect()
 set termguicolors
@@ -27,11 +29,13 @@ set wildmenu
 :set guioptions-=T  "remove toolbar
 :set guioptions-=r  "remove right-hand scroll bar
 :set guioptions-=L  "remove left-hand scroll bar
-:winpos 80 100
+":winpos 80 100
+:winpos -8 -2
 set backspace=indent,eol,start
 set lines=48
 set columns=210
-set tw=206
+set lines=999 columns=999 "set fullscreen
+set tw=235
 set nocompatible
 set smartindent
 set autoindent
@@ -57,19 +61,22 @@ set completeopt+=longest,menuone
 set completeopt+=preview
 let g:jedi#popup_on_dot = 1
 
-"Keybinds
+" Remaps
 nnoremap <SPACE> <Nop>
 let mapleader=" "
-"replace from void
-noremap P viw"_dP
+" Replace from void
+noremap <Leader>p viw"_dP
 noremap Y y$
 
-"FZF
+" FZF
 nnoremap <M-a> :Files <cr>
 nnoremap <M-s> :Files ../..<cr>
 nnoremap <M-d> :Files ../../..<cr>
+" NERDTree
 nnoremap <M-w> :NERDTreeFind<CR>
 map <C-b> :NERDTreeToggle<CR>
+" Open Nerd Tree in home folder
+map <M-e> :NERDTree ~/<CR>
 
 "map <F1>
 map <F4> <Esc>:set cursorline!<CR>
@@ -79,6 +86,7 @@ map <M-x> :call CompileRunGcc()<CR>
 map <F6> <Esc>:setlocal spell! spelllang=en_us<CR>
 map <F7> <Esc>:setlocal spell! spelllang=sv<CR>
 
+" window management
 nnoremap <Down> :resize +2<CR>
 nnoremap <Up> :resize -2<CR>
 nnoremap <Right> :vertical resize +2<CR>
@@ -87,12 +95,25 @@ nnoremap <C-J> <C-W><C-J>
 nnoremap <C-K> <C-W><C-K>
 nnoremap <C-L> <C-W><C-L>
 nnoremap <C-H> <C-W><C-H>
-
 xnoremap K :move '<-2<CR>gv-gv
 xnoremap J :move '>+1<CR>gv-gv
 
+" Go to tab by number
+noremap <leader>1 1gt
+noremap <leader>2 2gt
+noremap <leader>3 3gt
+noremap <leader>4 4gt
+noremap <leader>5 5gt
+noremap <leader>6 6gt
+noremap <leader>7 7gt
+noremap <leader>8 8gt
+noremap <leader>9 9gt
+noremap <leader>0 :tablast<cr>
+
+" Copy everything from file into clipboard
 inoremap <C-a> <Esc>gg"*yG
 
+" Filetype shortcuts
 autocmd FileType html inoremap <i<Tab> <em></em> <Space><++><Esc>/<<Enter>GNi
 autocmd FileType html inoremap <b<Tab> <b></b><Space><++><Esc>/<<Enter>GNi
 autocmd FileType html inoremap <h1<Tab> <h1></h1><Space><++><Esc>/<<Enter>GNi
@@ -112,13 +133,14 @@ autocmd FileType sql inoremap fun<Tab> delimiter //<Enter>create function x ()<E
 autocmd FileType sql inoremap pro<Tab> delimiter //<Enter>create procedure x ()<Enter>begin<Enter><Enter><Enter>end //<Enter>delimiter ;<Esc>/x<Enter>GN
 autocmd FileType sql inoremap vie<Tab> create view x as<Enter>select <Esc>/x<Enter>GN
 
-autocmd FileType text inoremap <line<Tab> --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------<Enter>
-autocmd FileType text inoremap <dot<Tab> •
-autocmd FileType text inoremap <date<Tab> <-- <C-R>=strftime("%Y-%m-%d %a")<CR><Esc>A -->
+autocmd FileType vtxt,text inoremap <line<Tab> --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------<Enter>
+autocmd FileType vtxt,text inoremap <dot<Tab> • 
+autocmd FileType vtxt,text inoremap <phi<Tab> φ 
+autocmd FileType vtxt,text inoremap <date<Tab> <-- <C-R>=strftime("%Y-%m-%d %a")<CR><Esc>A -->
 
+" Statusline
 set statusline=
 set laststatus=2
-
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
@@ -133,16 +155,18 @@ set statusline+=%#DiffChange#
 set statusline+=\ %c:%l/%L "display column and line pos
 set statusline+=\ %p%% "display percentage traversed of file
 
+" syntastic
 let g:syntastic_always_populate_loc_list = 0
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 
-"Better tabbing
+" Better tabbing
 vnoremap < <gv
 vnoremap > >gv
 imap <C-v> <C-r>+
 
+" Function for compiling code
 func! CompileRunGcc()
 exec "w"
 if &filetype == 'c'
@@ -171,3 +195,19 @@ exec "!csc %"
 exec "!%:r.exe"
 endif
 endfunc
+
+" vtxt syntax highlighting
+hi vtxtBlueRegion ctermfg=blue  guifg=#0000FF
+hi vtxtCyanRegion ctermfg=cyan  guifg=#00CED1
+hi vtxtGreenRegion ctermfg=green  guifg=#98FB98
+hi vtxtPurpleRegion ctermfg=Magenta  guifg=#ae81ff
+hi vtxtRedRegion ctermfg=red  guifg=#fb4934
+hi vtxtOrangeRegion ctermfg=yellow  guifg=#d79921
+hi vtxtYellowRegion ctermfg=lightyellow  guifg=#E6DB74
+
+hi vtxtDateRegion ctermfg=Magenta  guifg=#ae81ff
+hi vtxtDot ctermfg=green  guifg=#98FB98
+hi vtxtStar ctermfg=red  guifg=#fb4934
+hi vtxtLine ctermfg=yellow  guifg=#d79921
+hi vtxtComment ctermfg=cyan  guifg=#00CED1
+
