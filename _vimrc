@@ -52,6 +52,10 @@ highlight CursorLine cterm=NONE ctermbg=darkblue
 set cursorline
 set autochdir
 set scrolloff=8
+setglobal shiftround
+setglobal smarttab
+setglobal autoread
+setglobal autowrite
 "highlight Normal guibg=none
 colorscheme hybrid
 "some new stuff
@@ -67,6 +71,15 @@ let mapleader=" "
 " Replace from void
 noremap <Leader>p viw"_dP
 noremap Y y$
+
+" Vimgrep and QuickFix Lists 
+nnoremap <M-f> :vimgrep // *<left><left><left><C-f>i
+"nnoremap <M-g> :vimgrep //g **/*.py <Left><Left><Left><Left><Left><Left><Left><Left><Left><Left><Left><C-f>i
+nnoremap <M-g> :vimgrep ~/*<Left><Left><Left><C-f>i
+nnoremap <M-c> :cnext<CR>
+nnoremap <M-p> :cprev<CR>
+nnoremap <M-l> :clast<CR>
+nnoremap <M-b> :copen<CR>
 
 " FZF
 nnoremap <M-a> :Files <cr>
@@ -86,7 +99,7 @@ map <M-x> :call CompileRunGcc()<CR>
 map <F6> <Esc>:setlocal spell! spelllang=en_us<CR>
 map <F7> <Esc>:setlocal spell! spelllang=sv<CR>
 
-" window management
+" window management and movement
 nnoremap <Down> :resize +2<CR>
 nnoremap <Up> :resize -2<CR>
 nnoremap <Right> :vertical resize +2<CR>
@@ -109,6 +122,16 @@ noremap <leader>7 7gt
 noremap <leader>8 8gt
 noremap <leader>9 9gt
 noremap <leader>0 :tablast<cr>
+
+" tab maps
+nnoremap <M-t> :tabe<cr>
+nnoremap <M-v> :vsp<cr>
+nnoremap <M-q> :q<cr>
+
+" Go to last active tab
+au TabLeave * let g:lasttab = tabpagenr()
+nnoremap <silent> <leader>l :exe "tabn ".g:lasttab<cr>
+vnoremap <silent> <leader>l :exe "tabn ".g:lasttab<cr>
 
 " Copy everything from file into clipboard
 inoremap <C-a> <Esc>gg"*yG
