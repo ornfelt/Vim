@@ -30,7 +30,7 @@ set wildmenu
 :set guioptions-=r  "remove right-hand scroll bar
 :set guioptions-=L  "remove left-hand scroll bar
 ":winpos 80 100
-:winpos -8 -2
+:winpos -8 -1
 set backspace=indent,eol,start
 set lines=48
 set columns=210
@@ -81,6 +81,9 @@ nnoremap <M-p> :cprev<CR>
 nnoremap <M-l> :clast<CR>
 nnoremap <M-b> :copen<CR>
 
+"format rest of the text, go back and center screen
+nnoremap <M-r> gqG<C-o>zz
+
 " FZF
 nnoremap <M-a> :Files <cr>
 nnoremap <M-s> :Files ../..<cr>
@@ -111,22 +114,22 @@ nnoremap <C-H> <C-W><C-H>
 xnoremap K :move '<-2<CR>gv-gv
 xnoremap J :move '>+1<CR>gv-gv
 
-" Go to tab by number
-noremap <leader>1 1gt
-noremap <leader>2 2gt
-noremap <leader>3 3gt
-noremap <leader>4 4gt
-noremap <leader>5 5gt
-noremap <leader>6 6gt
-noremap <leader>7 7gt
-noremap <leader>8 8gt
-noremap <leader>9 9gt
-noremap <leader>0 :tablast<cr>
-
 " tab maps
 nnoremap <M-t> :tabe<cr>
 nnoremap <M-v> :vsp<cr>
 nnoremap <M-q> :q<cr>
+
+" Go to tab by number
+noremap <M-1> 1gt
+noremap <M-2> 2gt
+noremap <M-3> 3gt
+noremap <M-4> 4gt
+noremap <M-5> 5gt
+noremap <M-6> 6gt
+noremap <M-7> 7gt
+noremap <M-8> 8gt
+noremap <M-9> 9gt
+noremap <M-0> :tablast<cr>
 
 " Go to last active tab
 au TabLeave * let g:lasttab = tabpagenr()
