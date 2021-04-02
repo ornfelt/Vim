@@ -64,6 +64,13 @@ set shortmess+=c
 set completeopt+=longest,menuone
 set completeopt+=preview
 let g:jedi#popup_on_dot = 1
+" Disables automatic commenting on newline:
+autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
+
+" Turns off highlighting on the bits of code that are changed, so the line that is changed is highlighted but the actual text that has changed stands out on the line and is readable.
+if &diff
+        highlight! link DiffText MatchParen
+endif
 
 " Remaps
 nnoremap <SPACE> <Nop>
@@ -89,7 +96,8 @@ nnoremap <M-a> :Files <cr>
 nnoremap <M-s> :Files ../..<cr>
 nnoremap <M-d> :Files ../../..<cr>
 " NERDTree
-nnoremap <M-w> :NERDTreeFind<CR>
+"nnoremap <M-w> :NERDTreeFind<CR>
+nnoremap <M-w> :NERDTreeToggle %:p<CR>
 map <C-b> :NERDTreeToggle<CR>
 " Open Nerd Tree in home folder
 map <M-e> :NERDTree ~/<CR>
@@ -236,4 +244,23 @@ hi vtxtDot ctermfg=green  guifg=#98FB98
 hi vtxtStar ctermfg=red  guifg=#fb4934
 hi vtxtLine ctermfg=yellow  guifg=#d79921
 hi vtxtComment ctermfg=cyan  guifg=#00CED1
+
+" Function for toggling the bottom statusbar:
+let s:hidden_all = 1
+function! ToggleHiddenAll()
+    if s:hidden_all  == 0
+        let s:hidden_all = 1
+        set noshowmode
+        set noruler
+        set laststatus=0
+        set noshowcmd
+    else
+        let s:hidden_all = 0
+        set showmode
+        set ruler
+        set laststatus=2
+        set showcmd
+    endif
+endfunction
+nnoremap <leader>h :call ToggleHiddenAll()<CR>
 

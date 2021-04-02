@@ -528,6 +528,7 @@ Note: This avoids typing  i , the last character, the text to insert, <ESC>,
     <p class="important">
       <em>Hello</em> world!
     </p>
+
     This plugin is very powerful for HTML and XML editing, a niche which currently seems underfilled in Vim land. (As opposed to HTML/XML inserting, for which many plugins are available). Adding, changing, and removing pairs of tags simultaneously is a breeze.
 
     The . command will work with ds, cs, and yss if you install repeat.vim.
@@ -551,6 +552,13 @@ Note: This avoids typing  i , the last character, the text to insert, <ESC>,
     var Lazy_dog3 = 3;
     var Lazy_dog4 = 4;
 
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		       CUSTOM LESSON: digraphs symbols:
 
+    Enter pi:
 
-
+    Enter phi:
+    
+    Enter arrow:
+    
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
