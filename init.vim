@@ -227,6 +227,10 @@ func! CompileRun()
         exec "!python %"
     elseif &filetype == 'html'
         exec "!firefox % &"
+    elseif &filetype == 'js'
+        exec "!node %"
+    elseif &filetype == 'ts'
+        exec "!node %"
     elseif &filetype == 'go'
         exec "!go build %<"
         exec "!time go run %"
