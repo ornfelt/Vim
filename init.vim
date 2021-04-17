@@ -57,6 +57,7 @@ highlight CursorLine cterm=NONE ctermbg=darkblue
 set cursorline
 set autochdir
 set scrolloff=8
+set noswapfile
 setglobal shiftround
 setglobal smarttab
 setglobal autowrite
@@ -141,6 +142,9 @@ noremap <M-7> 7gt
 noremap <M-8> 8gt
 noremap <M-9> 9gt
 noremap <M-0> :tablast<cr>
+
+" Open myvimrc in new tab
+noremap <M-m> :tabe $myvimrc<cr>
 
 " Go to last active tab
 au TabLeave * let g:lasttab = tabpagenr()
@@ -272,3 +276,8 @@ nnoremap <leader>h :call ToggleHiddenAll()<CR>
 " Use tab and s-tab to navigate the completion list
 inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+
+" Make shift-insert work like in Xterm
+map <S-Insert> <MiddleMouse>
+map! <S-Insert> <MiddleMouse>
+inoremap <S-Insert> <Esc><MiddleMouse>
