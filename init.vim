@@ -280,4 +280,27 @@ inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 " Make shift-insert work like in Xterm
 map <S-Insert> <MiddleMouse>
 map! <S-Insert> <MiddleMouse>
-inoremap <S-Insert> <Esc><MiddleMouse>
+inoremap <S-Insert> <Esc><MiddleMouse>A
+
+" Coc config
+let g:coc_global_extensions = [
+  \ 'coc-snippets',
+  \ 'coc-pairs',
+  \ 'coc-eslint', 
+  \ 'coc-prettier', 
+  \ 'coc-python', 
+  \ 'coc-java', 
+  \ 'coc-tsserver', 
+  \ 'coc-json', 
+  \ ]
+
+" Remap for rename current word
+nmap <F2> <Plug>(coc-rename)
+
+" Remap for format selected region
+xmap <leader>f  <Plug>(coc-format-selected)
+nmap <leader>f  <Plug>(coc-format-selected)
+
+" Using CocList
+" Show all diagnostics
+nnoremap <silent> <Leader>d  :<C-u>CocList diagnostics<cr>
