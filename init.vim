@@ -12,7 +12,6 @@ Plug 'justinmk/vim-sneak'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'morhetz/gruvbox'
 Plug 'w0ng/vim-hybrid'
-
 Plug 'vim-syntastic/syntastic'
 
 " Initialize plugin system
@@ -23,9 +22,10 @@ set rtp+=~/.fzf
 " get syntax highlighting
 let mysyntaxfile = "~/.vim/syntax/vtxt.vim"
 au BufRead,BufNewFile *.vtxt set filetype=vtxt
-
 filetype plugin indent on
-"set termguicolors
+if (has("termguicolors"))
+    set termguicolors
+endif
 syntax on
 syntax enable
 set encoding=UTF-8
@@ -35,8 +35,8 @@ set noeb vb t_vb=
 set autoread
 set wildmenu
 "set guifont=Consolas:h10
-:winpos -8 -1
-:set backspace=indent,eol,start
+":winpos -8 -1
+set backspace=indent,eol,start
 set lines=48
 set columns=210
 set lines=999 columns=999 "set fullscreen
@@ -62,7 +62,6 @@ setglobal shiftround
 setglobal smarttab
 setglobal autowrite
 colorscheme hybrid
-"some new stuff
 set complete+=kspell
 set shortmess+=c
 set completeopt+=longest,menuone
@@ -70,7 +69,6 @@ set completeopt+=preview
 let g:jedi#popup_on_dot = 1
 " Disables automatic commenting on newline:
 autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
-
 " Turns off highlighting on the bits of code that are changed, so the line that is changed is highlighted but the actual text that has changed stands out on the line and is readable.
 if &diff
         highlight! link DiffText MatchParen
@@ -92,7 +90,7 @@ nnoremap <M-p> :cprev<CR>
 nnoremap <M-l> :clast<CR>
 nnoremap <M-b> :copen<CR>
 
-"format rest of the text, go back and center screen
+" Format rest of the text with vim formatting, go back and center screen
 nnoremap <M-r> gqG<C-o>zz
 
 " Neovim FZF
@@ -126,7 +124,7 @@ nnoremap <C-H> <C-W><C-H>
 xnoremap K :move '<-2<CR>gv-gv
 xnoremap J :move '>+1<CR>gv-gv
 
-" tab maps
+" Tab maps
 nnoremap <M-t> :tabe<cr>
 nnoremap <M-v> :vsp<cr>
 nnoremap <M-q> :q<cr>
@@ -177,8 +175,6 @@ autocmd FileType sql inoremap pro<Tab> delimiter //<Enter>create procedure x ()<
 autocmd FileType sql inoremap vie<Tab> create view x as<Enter>select <Esc>/x<Enter>GN
 
 autocmd FileType vtxt,text inoremap <line<Tab> --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------<Enter>
-autocmd FileType vtxt,text inoremap <dot<Tab> ? 
-autocmd FileType vtxt,text inoremap <phi<Tab> f 
 autocmd FileType vtxt,text inoremap <date<Tab> <-- <C-R>=strftime("%Y-%m-%d %a")<CR><Esc>A -->
 
 " Statusline
@@ -187,7 +183,6 @@ set laststatus=2
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
-
 set statusline+=%#Difftext#
 set statusline+=\ %M "track if changes has been made to file
 set statusline+=\ %y "show filetype
@@ -198,7 +193,7 @@ set statusline+=%#DiffChange#
 set statusline+=\ %c:%l/%L "display column and line pos
 set statusline+=\ %p%% "display percentage traversed of file
 
-" syntastic
+" Syntastic
 let g:syntastic_always_populate_loc_list = 0
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
@@ -251,7 +246,6 @@ hi vtxtPurpleRegion ctermfg=Magenta  guifg=#ae81ff
 hi vtxtRedRegion ctermfg=red  guifg=#fb4934
 hi vtxtOrangeRegion ctermfg=yellow  guifg=#d79921
 hi vtxtYellowRegion ctermfg=lightyellow  guifg=#E6DB74
-
 hi vtxtDateRegion ctermfg=Magenta  guifg=#ae81ff
 hi vtxtDot ctermfg=green  guifg=#98FB98
 hi vtxtStar ctermfg=red  guifg=#fb4934
@@ -292,19 +286,20 @@ let g:coc_global_extensions = [
   \ 'coc-pairs',
   \ 'coc-eslint', 
   \ 'coc-prettier', 
-  \ 'coc-python', 
   \ 'coc-java', 
+  \ 'coc-python', 
   \ 'coc-tsserver', 
   \ 'coc-json', 
   \ ]
-
 " Remap for rename current word
 nmap <F2> <Plug>(coc-rename)
-
 " Remap for format selected region
 xmap <leader>f  <Plug>(coc-format-selected)
 nmap <leader>f  <Plug>(coc-format-selected)
-
+xmap <leader>fg  mcggVG<Plug>(coc-format-selected)'c
+nmap <leader>fg  mcggVG<Plug>(coc-format-selected)'c
 " Using CocList
 " Show all diagnostics
 nnoremap <silent> <Leader>d  :<C-u>CocList diagnostics<cr>
+" Prettier command for coc
+command! -nargs=0 Prettier :CocCommand prettier.formatFile
