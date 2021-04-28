@@ -13,10 +13,12 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'morhetz/gruvbox'
 Plug 'w0ng/vim-hybrid'
 Plug 'vim-syntastic/syntastic'
+Plug 'tpope/vim-commentary'
 
 " Initialize plugin system
 call plug#end()
 
+let g:python3_host_prog='~\anaconda3\envs\pynvim\python.exe'
 set runtimepath+=~/.vim
 set rtp+=~/.fzf
 " get syntax highlighting
@@ -33,6 +35,7 @@ set number relativenumber
 set noerrorbells
 set noeb vb t_vb=
 set autoread
+set autowrite
 set wildmenu
 "set guifont=Consolas:h10
 ":winpos -8 -1
@@ -44,10 +47,11 @@ set tw=235
 set nocompatible
 set smartindent
 set autoindent
+set smarttab
 set tabstop=4
 set softtabstop=4
 set shiftwidth=4
-set expandtab
+set shiftround
 set hls
 set ic
 set splitright
@@ -58,9 +62,6 @@ set cursorline
 set autochdir
 set scrolloff=8
 set noswapfile
-setglobal shiftround
-setglobal smarttab
-setglobal autowrite
 colorscheme hybrid
 set complete+=kspell
 set shortmess+=c
@@ -117,12 +118,13 @@ nnoremap <Down> :resize +2<CR>
 nnoremap <Up> :resize -2<CR>
 nnoremap <Right> :vertical resize +2<CR>
 nnoremap <Left> :vertical resize -2<CR>
-nnoremap <C-J> <C-W><C-J>
-nnoremap <C-K> <C-W><C-K>
-nnoremap <C-L> <C-W><C-L>
-nnoremap <C-H> <C-W><C-H>
+map <silent> <C-h> <Plug>WinMoveLeft
+map <silent> <C-j> <Plug>WinMoveDown
+map <silent> <C-k> <Plug>WinMoveUp
+map <silent> <C-l> <Plug>WinMoveRight
 xnoremap K :move '<-2<CR>gv-gv
 xnoremap J :move '>+1<CR>gv-gv
+nmap <leader>z <Plug>Zoom
 
 " Tab maps
 nnoremap <M-t> :tabe<cr>
@@ -212,7 +214,8 @@ func! CompileRun()
         exec "!time ./%<"
     elseif &filetype == 'cpp'
         exec "!g++ % -o %<"
-        exec "!time ./%<"
+		exec "!%:r.exe"
+        "exec "!time ./%<"
     elseif &filetype == 'java'
         exec "!javac %"
         exec "!java -cp %:p:h %:t:r"
@@ -222,9 +225,11 @@ func! CompileRun()
         exec "!python %"
     elseif &filetype == 'html'
         exec "!firefox % &"
-    elseif &filetype == 'js'
+    elseif &filetype == 'javascript'
         exec "!node %"
-    elseif &filetype == 'ts'
+    elseif &filetype == 'jsx'
+        exec "!node %"
+    elseif &filetype == 'typescript'
         exec "!node %"
     elseif &filetype == 'go'
         exec "!go build %<"
@@ -303,3 +308,9 @@ nmap <leader>fg  mcggVG<Plug>(coc-format-selected)'c
 nnoremap <silent> <Leader>d  :<C-u>CocList diagnostics<cr>
 " Prettier command for coc
 command! -nargs=0 Prettier :CocCommand prettier.formatFile
+
+" remove extra whitespace
+nmap <leader>fs :%s/\s\+$<cr>
+
+" Map Ctrl-Backspace to delete the previous word in insert mode.
+imap <C-BS> <C-W>

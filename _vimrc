@@ -39,6 +39,7 @@ set tw=235
 set nocompatible
 set smartindent
 set autoindent
+set smarttab
 set tabstop=4
 set softtabstop=4
 set shiftwidth=4
@@ -52,10 +53,7 @@ highlight CursorLine cterm=NONE ctermbg=darkblue
 set cursorline
 set autochdir
 set scrolloff=8
-setglobal shiftround
-setglobal smarttab
-setglobal autoread
-setglobal autowrite
+set noswapfile
 "highlight Normal guibg=none
 colorscheme hybrid
 "some new stuff
@@ -104,9 +102,9 @@ map <M-e> :NERDTree ~/<CR>
 
 "map <F1>
 map <F4> <Esc>:set cursorline!<CR>
-"map <F5> :call CompileRunGcc()<CR>
+"map <F5> :call CompileRun()<CR>
 map <M-z> :noh<CR>
-map <M-x> :call CompileRunGcc()<CR>
+map <M-x> :call CompileRun()<CR>
 map <F6> <Esc>:setlocal spell! spelllang=en_us<CR>
 map <F7> <Esc>:setlocal spell! spelllang=sv<CR>
 
@@ -139,6 +137,9 @@ noremap <M-8> 8gt
 noremap <M-9> 9gt
 noremap <M-0> :tablast<cr>
 
+" Open myvimrc in new tab
+noremap <M-m> :tabe $myvimrc<cr>
+
 " Go to last active tab
 au TabLeave * let g:lasttab = tabpagenr()
 nnoremap <silent> <leader>l :exe "tabn ".g:lasttab<cr>
@@ -146,6 +147,8 @@ vnoremap <silent> <leader>l :exe "tabn ".g:lasttab<cr>
 
 " Copy everything from file into clipboard
 inoremap <C-a> <Esc>gg"*yG
+" Copy selection to clipboard
+noremap <C-c> "*y
 
 " Filetype shortcuts
 autocmd FileType html inoremap <i<Tab> <em></em> <Space><++><Esc>/<<Enter>GNi
@@ -168,8 +171,6 @@ autocmd FileType sql inoremap pro<Tab> delimiter //<Enter>create procedure x ()<
 autocmd FileType sql inoremap vie<Tab> create view x as<Enter>select <Esc>/x<Enter>GN
 
 autocmd FileType vtxt,text inoremap <line<Tab> --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------<Enter>
-autocmd FileType vtxt,text inoremap <dot<Tab> • 
-autocmd FileType vtxt,text inoremap <phi<Tab> φ 
 autocmd FileType vtxt,text inoremap <date<Tab> <-- <C-R>=strftime("%Y-%m-%d %a")<CR><Esc>A -->
 
 " Statusline
@@ -201,33 +202,40 @@ vnoremap > >gv
 imap <C-v> <C-r>+
 
 " Function for compiling code
-func! CompileRunGcc()
-exec "w"
-if &filetype == 'c'
-exec "!gcc % -o %<"
-exec "!time ./%<"
-elseif &filetype == 'cpp'
-exec "!g++ % -o %<"
-exec "!time ./%<"
-elseif &filetype == 'java'
-exec "!javac %"
-exec "!java -cp %:p:h %:t:r"
-elseif &filetype == 'sh'
-exec "!time bash %"
-elseif &filetype == 'python'
-exec "!python %"
-elseif &filetype == 'html'
-exec "!firefox % &"
-elseif &filetype == 'go'
-exec "!go build %<"
-exec "!time go run %"
-elseif &filetype == 'mkd'
-exec "!~/.vim/markdown.pl % > %.html &"
-exec "!firefox %.html &"
-elseif &filetype == 'cs'
-exec "!csc %"
-exec "!%:r.exe"
-endif
+func! CompileRun()
+    exec "w"
+    if &filetype == 'c'
+        exec "!gcc % -o %<"
+        exec "!time ./%<"
+    elseif &filetype == 'cpp'
+        exec "!g++ % -o %<"
+		exec "!%:r.exe"
+        "exec "!time ./%<"
+    elseif &filetype == 'java'
+        exec "!javac %"
+        exec "!java -cp %:p:h %:t:r"
+    elseif &filetype == 'sh'
+        exec "!time bash %"
+    elseif &filetype == 'python'
+        exec "!python %"
+    elseif &filetype == 'html'
+        exec "!firefox % &"
+    elseif &filetype == 'javascript'
+        exec "!node %"
+    elseif &filetype == 'jsx'
+        exec "!node %"
+    elseif &filetype == 'typescript'
+        exec "!node %"
+    elseif &filetype == 'go'
+        exec "!go build %<"
+        exec "!time go run %"
+    elseif &filetype == 'mkd'
+        exec "!~/.vim/markdown.pl % > %.html &"
+        exec "!firefox %.html &"
+    elseif &filetype == 'cs'
+        exec "!csc %"
+        exec "!%:r.exe"
+    endif
 endfunc
 
 " vtxt syntax highlighting
@@ -264,3 +272,5 @@ function! ToggleHiddenAll()
 endfunction
 nnoremap <leader>h :call ToggleHiddenAll()<CR>
 
+" remove extra whitespace
+nmap <leader>fs :%s/\s\+$<cr>
