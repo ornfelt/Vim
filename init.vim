@@ -14,6 +14,7 @@ Plug 'morhetz/gruvbox'
 Plug 'w0ng/vim-hybrid'
 Plug 'vim-syntastic/syntastic'
 Plug 'tpope/vim-commentary'
+Plug 'mhinz/vim-startify'
 
 " Initialize plugin system
 call plug#end()
