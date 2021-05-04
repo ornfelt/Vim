@@ -13,6 +13,7 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'morhetz/gruvbox'
 Plug 'w0ng/vim-hybrid'
 Plug 'vim-syntastic/syntastic'
+Plug 'ap/vim-css-color'
 Plug 'tpope/vim-commentary'
 Plug 'mhinz/vim-startify'
 
@@ -84,9 +85,8 @@ noremap <Leader>p viw"_dP
 noremap Y y$
 
 " Vimgrep and QuickFix Lists 
-nnoremap <M-f> :vimgrep // *<left><left><left><C-f>i
-"nnoremap <M-g> :vimgrep //g **/*.py <Left><Left><Left><Left><Left><Left><Left><Left><Left><Left><Left><C-f>i
-nnoremap <M-g> :vimgrep ~/*<Left><Left><Left><C-f>i
+nnoremap <M-f> :vimgrep // **/*.txt<left><left><left><left><left><left><left><left><left><left><C-f>i
+nnoremap <M-g> :vimgrep // **/*<Left><Left><Left><Left><Left><Left><C-f>i
 nnoremap <M-c> :cnext<CR>
 nnoremap <M-p> :cprev<CR>
 nnoremap <M-l> :clast<CR>
