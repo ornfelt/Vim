@@ -12,6 +12,7 @@ Plug 'justinmk/vim-sneak'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'morhetz/gruvbox'
 Plug 'w0ng/vim-hybrid'
+Plug 'sainnhe/sonokai'
 Plug 'vim-syntastic/syntastic'
 Plug 'ap/vim-css-color'
 Plug 'tpope/vim-commentary'
@@ -64,12 +65,20 @@ set cursorline
 set autochdir
 set scrolloff=8
 set noswapfile
-colorscheme hybrid
 set complete+=kspell
 set shortmess+=c
 set completeopt+=longest,menuone
 set completeopt+=preview
 let g:jedi#popup_on_dot = 1
+
+" If on laptop
+if !empty(glob("isLaptop.txt"))
+	colorscheme gruvbox
+	set tw=180
+else
+	colorscheme hybrid
+endif
+
 " Disables automatic commenting on newline:
 autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
 " Turns off highlighting on the bits of code that are changed, so the line that is changed is highlighted but the actual text that has changed stands out on the line and is readable.
