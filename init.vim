@@ -23,7 +23,7 @@ call plug#end()
 let g:python3_host_prog='~\anaconda3\envs\pynvim\python.exe'
 set runtimepath+=~/.vim
 set rtp+=~/.fzf
-" get syntax highlighting
+" Get syntax highlighting
 let mysyntaxfile = "~/.vim/syntax/vtxt.vim"
 au BufRead,BufNewFile *.vtxt set filetype=vtxt
 filetype plugin indent on
@@ -77,14 +77,14 @@ if &diff
         highlight! link DiffText MatchParen
 endif
 
-" Remaps
+" Leader remap
 nnoremap <SPACE> <Nop>
 let mapleader=" "
 " Replace from void
 noremap <Leader>p viw"_dP
 noremap Y y$
 
-" Vimgrep and QuickFix Lists 
+" Vimgrep and QuickFix Lists
 nnoremap <M-f> :vimgrep // **/*.txt<left><left><left><left><left><left><left><left><left><left><C-f>i
 nnoremap <M-g> :vimgrep // **/*<Left><Left><Left><Left><Left><Left><C-f>i
 nnoremap <M-h> :cfdo s//x/gc<left><left><left><left><left><C-f>i
@@ -108,14 +108,14 @@ map <C-b> :NERDTreeToggle<CR>
 " Open Nerd Tree in home folder
 map <M-e> :NERDTree ~/<CR>
 
-"map <F1>
-map <F4> <Esc>:set cursorline!<CR>
+" Settings
 map <M-z> :noh<CR>
 map <M-x> :call CompileRun()<CR>
-map <F6> <Esc>:setlocal spell! spelllang=en_us<CR>
-map <F7> <Esc>:setlocal spell! spelllang=sv<CR>
+map <F4> <Esc>:set cursorline!<CR>
+map <F5> <Esc>:setlocal spell! spelllang=en_us<CR>
+map <F6> <Esc>:setlocal spell! spelllang=sv<CR>
 
-" window management and movement
+" Window management and movement
 nnoremap <Down> :resize +2<CR>
 nnoremap <Up> :resize -2<CR>
 nnoremap <Right> :vertical resize +2<CR>
@@ -247,7 +247,7 @@ func! CompileRun()
     endif
 endfunc
 
-" vtxt syntax highlighting
+" Syntax highlighting for vtxt
 hi vtxtBlueRegion ctermfg=blue  guifg=#0000FF
 hi vtxtCyanRegion ctermfg=cyan  guifg=#00CED1
 hi vtxtGreenRegion ctermfg=green  guifg=#98FB98
@@ -293,12 +293,12 @@ inoremap <S-Insert> <Esc><MiddleMouse>A
 let g:coc_global_extensions = [
   \ 'coc-snippets',
   \ 'coc-pairs',
-  \ 'coc-eslint', 
-  \ 'coc-prettier', 
-  \ 'coc-java', 
-  \ 'coc-python', 
-  \ 'coc-tsserver', 
-  \ 'coc-json', 
+  \ 'coc-eslint',
+  \ 'coc-prettier',
+  \ 'coc-java',
+  \ 'coc-python',
+  \ 'coc-tsserver',
+  \ 'coc-json',
   \ ]
 " Remap for rename current word
 nmap <F2> <Plug>(coc-rename)
@@ -307,13 +307,14 @@ xmap <leader>f  <Plug>(coc-format-selected)
 nmap <leader>f  <Plug>(coc-format-selected)
 xmap <leader>fg  mcggVG<Plug>(coc-format-selected)'c
 nmap <leader>fg  mcggVG<Plug>(coc-format-selected)'c
-" Using CocList
-" Show all diagnostics
+" Show all diagnostics using CocList
 nnoremap <silent> <Leader>d  :<C-u>CocList diagnostics<cr>
 " Prettier command for coc
 command! -nargs=0 Prettier :CocCommand prettier.formatFile
 
-" remove extra whitespace
+" Show extra whitespace
+nmap <leader>ws /\s\+$/<cr>
+" Remove extra whitespace
 nmap <leader>fs :%s/\s\+$<cr>
 
 " Map Ctrl-Backspace to delete the previous word in insert mode.
