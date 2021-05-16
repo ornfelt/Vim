@@ -87,6 +87,7 @@ noremap Y y$
 " Vimgrep and QuickFix Lists 
 nnoremap <M-f> :vimgrep // **/*.txt<left><left><left><left><left><left><left><left><left><left><C-f>i
 nnoremap <M-g> :vimgrep // **/*<Left><Left><Left><Left><Left><Left><C-f>i
+nnoremap <M-h> :cfdo s//x/gc<left><left><left><left><left><C-f>i
 nnoremap <M-c> :cnext<CR>
 nnoremap <M-p> :cprev<CR>
 nnoremap <M-l> :clast<CR>
@@ -125,6 +126,7 @@ map <silent> <C-k> <Plug>WinMoveUp
 map <silent> <C-l> <Plug>WinMoveRight
 xnoremap K :move '<-2<CR>gv-gv
 xnoremap J :move '>+1<CR>gv-gv
+xnoremap <leader>j :join<CR>
 nmap <leader>z <Plug>Zoom
 
 " Tab maps
@@ -212,7 +214,8 @@ func! CompileRun()
     exec "w"
     if &filetype == 'c'
         exec "!gcc % -o %<"
-        exec "!time ./%<"
+		exec "!%:r.exe"
+        "exec "!time ./%<"
     elseif &filetype == 'cpp'
         exec "!g++ % -o %<"
 		exec "!%:r.exe"
