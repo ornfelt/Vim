@@ -2,33 +2,16 @@ if &compatible
   set nocompatible               " Be iMproved
 endif
 
+let g:python3_host_prog='~\anaconda3\envs\pynvim\python.exe'
+set runtimepath+=~/.vim
+set rtp+=~/.fzf
+
 " If on laptop
 if !empty(glob("~/isLaptop.txt"))
 	"execute pathogen#infect()
 else
-	" Specify a directory for plugins
-	call plug#begin('~/.vim/plugged')
-
-	Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-	Plug 'preservim/nerdtree'
-	Plug 'tpope/vim-surround'
-	Plug 'justinmk/vim-sneak'
-	Plug 'neoclide/coc.nvim', {'branch': 'release'}
-	Plug 'morhetz/gruvbox'
-	Plug 'w0ng/vim-hybrid'
-	Plug 'sainnhe/sonokai'
-	Plug 'vim-syntastic/syntastic'
-	Plug 'ap/vim-css-color'
-	Plug 'tpope/vim-commentary'
-	Plug 'mhinz/vim-startify'
-
-	" Initialize plugin system
-	call plug#end()
+	execute pathogen#infect()
 endif
-
-let g:python3_host_prog='~\anaconda3\envs\pynvim\python.exe'
-set runtimepath+=~/.vim
-set rtp+=~/.fzf
 
 " Get syntax highlighting
 let mysyntaxfile = "~/.vim/syntax/vtxt.vim"
