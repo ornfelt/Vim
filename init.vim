@@ -72,7 +72,7 @@ set completeopt+=preview
 let g:jedi#popup_on_dot = 1
 
 " If on laptop
-if !empty(glob("isLaptop.txt"))
+if !empty(glob("~/isLaptop.txt"))
 	colorscheme gruvbox
 	set tw=180
 else
@@ -90,7 +90,7 @@ endif
 nnoremap <SPACE> <Nop>
 let mapleader=" "
 " Replace from void
-noremap <Leader>p viw"_dP
+noremap <leader>p viw"_dP
 noremap Y y$
 
 " Vimgrep and QuickFix Lists
@@ -318,7 +318,7 @@ nmap <leader>f  <Plug>(coc-format-selected)
 xmap <leader>fg  mcggVG<Plug>(coc-format-selected)'c
 nmap <leader>fg  mcggVG<Plug>(coc-format-selected)'c
 " Show all diagnostics using CocList
-nnoremap <silent> <Leader>d  :<C-u>CocList diagnostics<cr>
+nnoremap <silent> <leader>d  :<C-u>CocList diagnostics<cr>
 " Prettier command for coc
 command! -nargs=0 Prettier :CocCommand prettier.formatFile
 
