@@ -162,6 +162,7 @@ noremap <M-m> :tabe $myvimrc<cr>
 au TabLeave * let g:lasttab = tabpagenr()
 nnoremap <silent> <leader>l :exe "tabn ".g:lasttab<cr>
 vnoremap <silent> <leader>l :exe "tabn ".g:lasttab<cr>
+nnoremap <leader>o <C-^>
 
 " Copy everything from file into clipboard
 inoremap <C-a> <Esc>gg"*yG
