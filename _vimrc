@@ -1,36 +1,59 @@
-" Note: Skip initialization for vim-tiny or vim-small.  if 0 | endif
-
 if &compatible
   set nocompatible               " Be iMproved
 endif
 
-" Required:
+" If on laptop
+if !empty(glob("~/isLaptop.txt"))
+	"execute pathogen#infect()
+else
+	" Specify a directory for plugins
+	call plug#begin('~/.vim/plugged')
+
+	Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+	Plug 'preservim/nerdtree'
+	Plug 'tpope/vim-surround'
+	Plug 'justinmk/vim-sneak'
+	Plug 'neoclide/coc.nvim', {'branch': 'release'}
+	Plug 'morhetz/gruvbox'
+	Plug 'w0ng/vim-hybrid'
+	Plug 'sainnhe/sonokai'
+	Plug 'vim-syntastic/syntastic'
+	Plug 'ap/vim-css-color'
+	Plug 'tpope/vim-commentary'
+	Plug 'mhinz/vim-startify'
+
+	" Initialize plugin system
+	call plug#end()
+endif
+
+let g:python3_host_prog='~\anaconda3\envs\pynvim\python.exe'
 set runtimepath+=~/.vim
 set rtp+=~/.fzf
-"set pythonthreehome=C:\Users\jonas\AppData\Local\Programs\Python\Python39
-"set pythondthreell=C:\Users\jonas\AppData\Local\Programs\Python\Python39\DLLs
-set pythonthreehome=C:\Users\jonas\AppData\Local\Programs\Python\Python38-32
-set pythondthreell=C:\Users\jonas\AppData\Local\Programs\Python\Python38-32\DLLs
-" get syntax highlighting
+
+" Get syntax highlighting
 let mysyntaxfile = "~/.vim/syntax/vtxt.vim"
 au BufRead,BufNewFile *.vtxt set filetype=vtxt
 filetype plugin indent on
-execute pathogen#infect()
-set termguicolors
+if (has("termguicolors"))
+    set termguicolors
+endif
 syntax on
 syntax enable
 set encoding=UTF-8
 set number relativenumber
 set noerrorbells
 set noeb vb t_vb=
-set autoread
+"set autoread
+"set autowrite
 set wildmenu
-:set guioptions-=m  "remove menu bar
-:set guioptions-=T  "remove toolbar
-:set guioptions-=r  "remove right-hand scroll bar
-:set guioptions-=L  "remove left-hand scroll bar
+
+":set guioptions-=m  "remove menu bar
+":set guioptions-=T  "remove toolbar
+":set guioptions-=r  "remove right-hand scroll bar
+":set guioptions-=L  "remove left-hand scroll bar
 ":winpos 80 100
 :winpos -8 -1
+
 set backspace=indent,eol,start
 set lines=48
 set columns=210
@@ -43,7 +66,7 @@ set smarttab
 set tabstop=4
 set softtabstop=4
 set shiftwidth=4
-set expandtab
+set shiftround
 set hls
 set ic
 set splitright
@@ -53,74 +76,81 @@ highlight CursorLine cterm=NONE ctermbg=darkblue
 set cursorline
 set autochdir
 set scrolloff=8
-set noswapfile
-"highlight Normal guibg=none
-colorscheme hybrid
-"some new stuff
+"set noswapfile
 set complete+=kspell
 set shortmess+=c
 set completeopt+=longest,menuone
 set completeopt+=preview
 let g:jedi#popup_on_dot = 1
+
+" If on laptop
+if !empty(glob("~/isLaptop.txt"))
+	colorscheme gruvbox
+	set tw=180
+else
+	colorscheme hybrid
+endif
+
 " Disables automatic commenting on newline:
 autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
-
 " Turns off highlighting on the bits of code that are changed, so the line that is changed is highlighted but the actual text that has changed stands out on the line and is readable.
 if &diff
         highlight! link DiffText MatchParen
 endif
 
-" Remaps
+" Leader remap
 nnoremap <SPACE> <Nop>
 let mapleader=" "
 " Replace from void
-noremap <Leader>p viw"_dP
+noremap <leader>p viw"_dP
 noremap Y y$
 
-" Vimgrep and QuickFix Lists 
-nnoremap <M-f> :vimgrep // *<left><left><left><C-f>i
-"nnoremap <M-g> :vimgrep //g **/*.py <Left><Left><Left><Left><Left><Left><Left><Left><Left><Left><Left><C-f>i
-nnoremap <M-g> :vimgrep ~/*<Left><Left><Left><C-f>i
+" Vimgrep and QuickFix Lists
+nnoremap <M-f> :vimgrep // **/*.txt<left><left><left><left><left><left><left><left><left><left><C-f>i
+nnoremap <M-g> :vimgrep // **/*<Left><Left><Left><Left><Left><Left><C-f>i
+nnoremap <M-h> :cfdo s//x/gc<left><left><left><left><left><C-f>i
 nnoremap <M-c> :cnext<CR>
 nnoremap <M-p> :cprev<CR>
 nnoremap <M-l> :clast<CR>
 nnoremap <M-b> :copen<CR>
 
-"format rest of the text, go back and center screen
+" Format rest of the text with vim formatting, go back and center screen
 nnoremap <M-r> gqG<C-o>zz
 
 " FZF
 nnoremap <M-a> :Files <cr>
 nnoremap <M-s> :Files ../..<cr>
 nnoremap <M-d> :Files ../../..<cr>
+nnoremap <M-o> :Files c:/<cr>
+
 " NERDTree
-"nnoremap <M-w> :NERDTreeFind<CR>
 nnoremap <M-w> :NERDTreeToggle %:p<CR>
 map <C-b> :NERDTreeToggle<CR>
 " Open Nerd Tree in home folder
 map <M-e> :NERDTree ~/<CR>
 
-"map <F1>
-map <F4> <Esc>:set cursorline!<CR>
-"map <F5> :call CompileRun()<CR>
+" Settings
 map <M-z> :noh<CR>
 map <M-x> :call CompileRun()<CR>
-map <F6> <Esc>:setlocal spell! spelllang=en_us<CR>
-map <F7> <Esc>:setlocal spell! spelllang=sv<CR>
+map <F4> <Esc>:set cursorline!<CR>
+map <F5> <Esc>:setlocal spell! spelllang=en_us<CR>
+map <F6> <Esc>:setlocal spell! spelllang=sv<CR>
 
-" window management and movement
+" Window management and movement
 nnoremap <Down> :resize +2<CR>
 nnoremap <Up> :resize -2<CR>
 nnoremap <Right> :vertical resize +2<CR>
 nnoremap <Left> :vertical resize -2<CR>
-nnoremap <C-J> <C-W><C-J>
-nnoremap <C-K> <C-W><C-K>
-nnoremap <C-L> <C-W><C-L>
-nnoremap <C-H> <C-W><C-H>
+map <silent> <C-h> <Plug>WinMoveLeft
+map <silent> <C-j> <Plug>WinMoveDown
+map <silent> <C-k> <Plug>WinMoveUp
+map <silent> <C-l> <Plug>WinMoveRight
 xnoremap K :move '<-2<CR>gv-gv
 xnoremap J :move '>+1<CR>gv-gv
+xnoremap <leader>j :join<CR>
+nmap <leader>z <Plug>Zoom
 
-" tab maps
+" Tab maps
 nnoremap <M-t> :tabe<cr>
 nnoremap <M-v> :vsp<cr>
 nnoremap <M-q> :q<cr>
@@ -144,6 +174,7 @@ noremap <M-m> :tabe $myvimrc<cr>
 au TabLeave * let g:lasttab = tabpagenr()
 nnoremap <silent> <leader>l :exe "tabn ".g:lasttab<cr>
 vnoremap <silent> <leader>l :exe "tabn ".g:lasttab<cr>
+nnoremap <leader>o <C-^>
 
 " Copy everything from file into clipboard
 inoremap <C-a> <Esc>gg"*yG
@@ -179,7 +210,6 @@ set laststatus=2
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
-
 set statusline+=%#Difftext#
 set statusline+=\ %M "track if changes has been made to file
 set statusline+=\ %y "show filetype
@@ -190,7 +220,7 @@ set statusline+=%#DiffChange#
 set statusline+=\ %c:%l/%L "display column and line pos
 set statusline+=\ %p%% "display percentage traversed of file
 
-" syntastic
+" Syntastic
 let g:syntastic_always_populate_loc_list = 0
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
@@ -206,7 +236,8 @@ func! CompileRun()
     exec "w"
     if &filetype == 'c'
         exec "!gcc % -o %<"
-        exec "!time ./%<"
+		exec "!%:r.exe"
+        "exec "!time ./%<"
     elseif &filetype == 'cpp'
         exec "!g++ % -o %<"
 		exec "!%:r.exe"
@@ -238,7 +269,7 @@ func! CompileRun()
     endif
 endfunc
 
-" vtxt syntax highlighting
+" Syntax highlighting for vtxt
 hi vtxtBlueRegion ctermfg=blue  guifg=#0000FF
 hi vtxtCyanRegion ctermfg=cyan  guifg=#00CED1
 hi vtxtGreenRegion ctermfg=green  guifg=#98FB98
@@ -246,7 +277,6 @@ hi vtxtPurpleRegion ctermfg=Magenta  guifg=#ae81ff
 hi vtxtRedRegion ctermfg=red  guifg=#fb4934
 hi vtxtOrangeRegion ctermfg=yellow  guifg=#d79921
 hi vtxtYellowRegion ctermfg=lightyellow  guifg=#E6DB74
-
 hi vtxtDateRegion ctermfg=Magenta  guifg=#ae81ff
 hi vtxtDot ctermfg=green  guifg=#98FB98
 hi vtxtStar ctermfg=red  guifg=#fb4934
@@ -272,5 +302,7 @@ function! ToggleHiddenAll()
 endfunction
 nnoremap <leader>h :call ToggleHiddenAll()<CR>
 
-" remove extra whitespace
+" Show extra whitespace
+nmap <leader>ws /\s\+$/<cr>
+" Remove extra whitespace
 nmap <leader>fs :%s/\s\+$<cr>
