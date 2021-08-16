@@ -1,0 +1,1 @@
+autocmd BufRead,BufNewFile *.vtxt set filetype=vtxt

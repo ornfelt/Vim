@@ -17,6 +17,10 @@ Plug 'vim-syntastic/syntastic'
 Plug 'ap/vim-css-color'
 Plug 'tpope/vim-commentary'
 Plug 'mhinz/vim-startify'
+Plug 'vimwiki/vimwiki'	
+"Plug 'neoclide/coc.nvim', {'tag': '*', 'do': { -> coc#util#install()}}
+"Plug 'jalvesaq/vimcmdline'
+"Plug 'nvim-treesitter/nvim-treesitter'
 
 " Initialize plugin system
 call plug#end()
@@ -71,14 +75,6 @@ set completeopt+=longest,menuone
 set completeopt+=preview
 let g:jedi#popup_on_dot = 1
 
-" If on laptop
-if !empty(glob("~/isLaptop.txt"))
-	colorscheme gruvbox
-	set tw=180
-else
-	colorscheme hybrid
-endif
-
 " Disables automatic commenting on newline:
 autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
 " Turns off highlighting on the bits of code that are changed, so the line that is changed is highlighted but the actual text that has changed stands out on the line and is readable.
@@ -92,6 +88,12 @@ let mapleader=" "
 " Replace from void
 noremap <leader>p viw"_dP
 noremap Y y$
+" Delete to void
+vnoremap <leader>d "_d
+nnoremap <leader>d "_d
+" Paste from previous registers
+noremap <leader>1 "0p
+noremap <leader>2 "1p
 
 " Vimgrep and QuickFix Lists
 nnoremap <M-f> :vimgrep // **/*.txt<left><left><left><left><left><left><left><left><left><left><C-f>i
@@ -102,20 +104,15 @@ nnoremap <M-p> :cprev<CR>
 nnoremap <M-l> :clast<CR>
 nnoremap <M-b> :copen<CR>
 
-" Format rest of the text with vim formatting, go back and center screen
-nnoremap <M-r> gqG<C-o>zz
-
 " Neovim FZF
 nnoremap <M-a> :FZF <cr>
-nnoremap <M-s> :FZF ../..<cr>
 nnoremap <M-d> :FZF ../../..<cr>
 nnoremap <M-o> :FZF c:/<cr>
 
 " NERDTree
-nnoremap <M-w> :NERDTreeToggle %:p<CR>
+map <M-w> :NERDTree ~/<CR>
+nnoremap <M-e> :NERDTreeToggle %:p<CR>
 map <C-b> :NERDTreeToggle<CR>
-" Open Nerd Tree in home folder
-map <M-e> :NERDTree ~/<CR>
 
 " Settings
 map <M-z> :noh<CR>
@@ -139,11 +136,23 @@ xnoremap <leader>j :join<CR>
 nmap <leader>z <Plug>Zoom
 
 " Tab maps
-nnoremap <M-t> :tabe<cr>
-nnoremap <M-v> :vsp<cr>
 nnoremap <M-q> :q<cr>
+nnoremap <M-t> :tabe<cr>
+nnoremap <M-s> :split<cr>
+nnoremap <M-Enter> :vsp<cr>
+nnoremap <M-<> :vsp<cr>
 
 " Go to tab by number
+" noremap <leader>1 1gt
+" noremap <leader>2 2gt
+" noremap <leader>3 3gt
+" noremap <leader>4 4gt
+" noremap <leader>5 5gt
+" noremap <leader>6 6gt
+" noremap <leader>7 7gt
+" noremap <leader>8 8gt
+" noremap <leader>9 9gt
+" noremap <leader>0 :tablast<cr>
 noremap <M-1> 1gt
 noremap <M-2> 2gt
 noremap <M-3> 3gt
@@ -155,7 +164,7 @@ noremap <M-8> 8gt
 noremap <M-9> 9gt
 noremap <M-0> :tablast<cr>
 
-" Open myvimrc in new tab
+" Open vim config in new tab
 noremap <M-m> :tabe $myvimrc<cr>
 
 " Go to last active tab
@@ -191,6 +200,7 @@ autocmd FileType sql inoremap vie<Tab> create view x as<Enter>select <Esc>/x<Ent
 
 autocmd FileType vtxt,text inoremap <line<Tab> --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------<Enter>
 autocmd FileType vtxt,text inoremap <date<Tab> <-- <C-R>=strftime("%Y-%m-%d %a")<CR><Esc>A -->
+autocmd FileType c inoremap for<Tab> for(int i = 0; i < val; i++){<Enter><Enter>}<Esc>?val<Enter>ciw
 
 " Statusline
 set statusline=
@@ -210,14 +220,14 @@ set statusline+=\ %p%% "display percentage traversed of file
 
 " Syntastic
 let g:syntastic_always_populate_loc_list = 0
-let g:syntastic_auto_loc_list = 1
+"let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 
 " Better tabbing
 vnoremap < <gv
 vnoremap > >gv
-imap <C-v> <C-r>+
+imap <C-v> <Esc>"+gp
 
 " Function for compiling code
 func! CompileRun()
@@ -227,7 +237,7 @@ func! CompileRun()
 		exec "!%:r.exe"
         "exec "!time ./%<"
     elseif &filetype == 'cpp'
-        exec "!g++ % -o %<"
+        exec "!g++ % -o %< -lbgi -lgdi32 -lcomdlg32 -luuid -loleaut32 -lole32"
 		exec "!%:r.exe"
         "exec "!time ./%<"
     elseif &filetype == 'java'
@@ -309,23 +319,58 @@ let g:coc_global_extensions = [
   \ 'coc-python',
   \ 'coc-tsserver',
   \ 'coc-json',
+  \ 'coc-clangd',
   \ ]
 " Remap for rename current word
 nmap <F2> <Plug>(coc-rename)
 " Remap for format selected region
-xmap <leader>f  <Plug>(coc-format-selected)
-nmap <leader>f  <Plug>(coc-format-selected)
-xmap <leader>fg  mcggVG<Plug>(coc-format-selected)'c
-nmap <leader>fg  mcggVG<Plug>(coc-format-selected)'c
+xmap <leader>cf  <Plug>(coc-format-selected)
+nmap <leader>cf  <Plug>(coc-format-selected)
+xmap <leader>cg  mcggVG<Plug>(coc-format-selected)'c
+nmap <leader>cg  mcggVG<Plug>(coc-format-selected)'c
 " Show all diagnostics using CocList
-nnoremap <silent> <leader>d  :<C-u>CocList diagnostics<cr>
+nnoremap <silent> <leader>cd  :<C-u>CocList diagnostics<cr>
 " Prettier command for coc
 command! -nargs=0 Prettier :CocCommand prettier.formatFile
 
 " Show extra whitespace
-nmap <leader>ws /\s\+$/<cr>
+nmap <leader>s /\s\+$/<cr>
 " Remove extra whitespace
-nmap <leader>fs :%s/\s\+$<cr>
+nmap <leader>ws :%s/\s\+$<cr>
+" Format rest of the text with vim formatting, go back and center screen
+"nnoremap <leader>r gqG<C-o>zz
+nmap <leader>r gqG<C-o>zz
+
+" Undo break points
+inoremap , ,<c-g>u
+inoremap . .<c-g>u
+inoremap ! !<c-g>u
+inoremap ? ?<c-g>u
 
 " Map Ctrl-Backspace to delete the previous word in insert mode.
 imap <C-BS> <C-W>
+
+" If on laptop (set specific settings for my laptop which runs arch linux)
+if !empty(glob("~/isLaptop.txt"))
+	"let g:python3_host_prog='/bin/python3'
+	"let g:coc_node_path = "/usr/bin/node"
+	colorscheme gruvbox
+	set tw=180
+	nnoremap <M-o> :FZF /<cr>
+	" Open vim config in new tab
+	noremap <M-m> :tabe ~/.config/nvim/init.vim<cr>
+	" Open i3 config in new tab
+	noremap <M-,> :tabe ~/.config/i3/config<cr>
+	" Open zshrc in new tab
+	noremap <M-.> :tabe ~/.zshrc<cr>
+	noremap <C-c> y
+	imap <C-v> <Esc>"+gP
+	set clipboard=unnamedplus
+	highlight Normal guibg=none
+	highlight NonText guibg=none
+	highlight LineNr cterm=NONE ctermfg=grey gui=NONE guifg=grey guibg=NONE term=bold
+else
+	"let g:python3_host_prog='~\anaconda3\envs\pynvim\python.exe'
+	"colorscheme gruvbox
+	colorscheme hybrid
+endif
